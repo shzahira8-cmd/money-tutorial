@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 3 DLP Math: Money Master Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Fredoka', sans-serif; background-color: #f0fdf4; }
+        .bubbly-btn { transition: all 0.15s ease-in-out; }
+        .bubbly-btn:active { transform: scale(0.95); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Game Container -->
+    <div class="bg-white border-4 border-emerald-400 rounded-3xl shadow-2xl max-w-xl w-full p-6 text-slate-800">
+        
+        <!-- Header / Scoreboard -->
+        <div class="flex items-center justify-between bg-emerald-100 p-4 rounded-2xl mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-emerald-800">🛒 Shopping Spree!</h1>
+                <p class="text-xs text-emerald-600 font-semibold">Year 3 DLP Mathematics (Money Topic)</p>
+            </div>
+            <div class="flex items-center bg-yellow-300 px-4 py-2 rounded-full border-2 border-yellow-500 shadow-sm">
+                <span class="text-xl mr-1">⭐</span>
+                <span id="score" class="font-bold text-xl text-yellow-900">0</span>
+            </div>
+        </div>
+
+        <!-- Question Screen -->
+        <div id="quiz-box" class="block">
+            <div class="flex justify-between items-center mb-2 text-sm text-slate-500 font-bold">
+                <span id="question-number">Question 1 of 5</span>
+                <span id="question-category" class="bg-emerald-200 text-emerald-800 px-3 py-1 rounded-full text-xs">Addition</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 h-3 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-emerald-500 h-full w-1/5 transition-all duration-300"></div>
+            </div>
+
+            <!-- Item Display / Scenario -->
+            <div class="bg-emerald-50 border-2 border-emerald-200 p-6 rounded-2xl text-center mb-6">
+                <div id="item-icon" class="text-5xl mb-2">✏️</div>
+                <p id="question-text" class="text-lg font-bold text-slate-700">Aiman buys a pencil case for RM14.20 and a ruler for RM3.50. How much is the total cost?</p>
+            </div>
+
+            <!-- Answer Options -->
+            <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                <!-- Dynamic Buttons will render here -->
+            </div>
+
+            <!-- Feedback Area -->
+            <div id="feedback" class="hidden p-4 rounded-xl text-center font-bold text-lg mb-4"></div>
+
+            <!-- Next Button -->
+            <button id="next-btn" onclick="nextQuestion()" class="w-full py-4 bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-lg border-b-4 border-emerald-700 bubbly-btn hover:bg-emerald-600">
+                Next Question ➡️
+            </button>
+        </div>
+
+        <!-- Result / Reward Screen -->
+        <div id="result-box" class="hidden text-center py-6">
+            <div class="text-6xl mb-3">🏆</div>
+            <h2 class="text-3xl font-bold text-emerald-800 mb-2">Congratulations!</h2>
+            <p class="text-slate-600 text-lg mb-6">You are now an official <br><span class="text-emerald-600 font-bold text-xl">Young Money Master! 💰</span></p>
+
+            <div class="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-6 mb-6">
+                <p class="text-sm font-bold text-yellow-800 mb-1">FINAL SCORE</p>
+                <p id="final-score" class="text-5xl font-black text-yellow-600">5 / 5</p>
+            </div>
+
+            <button onclick="restartGame()" class="w-full py-4 bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-lg border-b-4 border-emerald-700 bubbly-btn hover:bg-emerald-600">
+                🔄 Play Again
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            {
+                icon: "✏️📏",
+                category: "Addition",
+                text: "Aiman buys a pencil box for RM14.20 and a ruler for RM3.50. What is the total cost?",
+                options: ["RM17.50", "RM17.70", "RM18.20", "RM17.20"],
+                correct: 1,
+                explanation: "RM14.20 + RM3.50 = RM17.70"
+            },
+            {
+                icon: "📚",
+                category: "Subtraction & Change",
+                text: "Maya pays RM50.00 to buy a storybook that costs RM18.40. How much change (baki) does she get?",
+                options: ["RM32.60", "RM31.60", "RM31.40", "RM32.40"],
+                correct: 1,
+                explanation: "RM50.00 - RM18.40 = RM31.60"
+            },
+            {
+                icon: "🐷💰",
+                category: "Addition",
+                text: "Siti saves RM25.50 in January and RM34.40 in February. What is her total savings?",
+                options: ["RM59.90", "RM59.50", "RM60.90", "RM58.90"],
+                correct: 0,
+                explanation: "RM25.50 + RM34.40 = RM59.90"
+            },
+            {
+                icon: "🎒🍾",
+                category: "Problem Solving",
+                text: "Adam buys a school bag for RM42.00 and a water bottle for RM15.50. What is the total price?",
+                options: ["RM57.00", "RM58.50", "RM57.50", "RM56.50"],
+                correct: 2,
+                explanation: "RM42.00 + RM15.50 = RM57.50"
+            },
+            {
+                icon: "🎮",
+                category: "Financial Literacy",
+                text: "Sarah wants a RM75.00 game. She has RM48.20. How much more money does she need to save?",
+                options: ["RM26.80", "RM27.80", "RM26.20", "RM27.20"],
+                correct: 0,
+                explanation: "RM75.00 - RM48.20 = RM26.80"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        function loadQuestion() {
+            selectedOption = null;
+            const q = questions[currentQuestion];
+            
+            document.getElementById('question-number').innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('question-category').innerText = q.category;
+            document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            document.getElementById('item-icon').innerText = q.icon;
+            document.getElementById('question-text').innerText = q.text;
+
+            const feedback = document.getElementById('feedback');
+            feedback.className = "hidden p-4 rounded-xl text-center font-bold text-lg mb-4";
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full py-3 px-4 bg-slate-100 border-2 border-slate-300 rounded-xl text-left font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-400 bubbly-btn flex justify-between items-center';
+                btn.onclick = () => selectOption(index, btn);
+                btn.innerHTML = `<span>${option}</span> <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-500 font-semibold">${String.fromCharCode(65 + index)}</span>`;
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(index, buttonElement) {
+            if (selectedOption !== null) return; // Prevent multiple clicks
+            selectedOption = index;
+
+            const q = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('hidden');
+
+            const allButtons = document.getElementById('options-container').children;
+
+            if (index === q.correct) {
+                score++;
+                document.getElementById('score').innerText = score;
+                buttonElement.className = 'w-full py-3 px-4 bg-emerald-500 text-white border-2 border-emerald-600 rounded-xl text-left font-bold flex justify-between items-center';
+                feedback.innerHTML = `✅ Correct! <br><span class="text-sm font-normal">${q.explanation}</span>`;
+                feedback.classList.add('bg-emerald-100', 'text-emerald-800', 'border-2', 'border-emerald-300');
+            } else {
+                buttonElement.className = 'w-full py-3 px-4 bg-rose-500 text-white border-2 border-rose-600 rounded-xl text-left font-bold flex justify-between items-center';
+                allButtons[q.correct].className = 'w-full py-3 px-4 bg-emerald-500 text-white border-2 border-emerald-600 rounded-xl text-left font-bold flex justify-between items-center';
+                feedback.innerHTML = `❌ Oops! <br><span class="text-sm font-normal">${q.explanation}</span>`;
+                feedback.classList.add('bg-rose-100', 'text-rose-800', 'border-2', 'border-rose-300');
+            }
+        }
+
+        function nextQuestion() {
+            if (selectedOption === null && currentQuestion < questions.length) {
+                alert("Please select an answer first! 😊");
+                return;
+            }
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-box').classList.add('hidden');
+            document.getElementById('result-box').classList.remove('hidden');
+            document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+        }
+
+        function restartGame() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('score').innerText = score;
+            document.getElementById('result-box').classList.add('hidden');
+            document.getElementById('quiz-box').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        // Initialize first question on load
+        loadQuestion();
+    </script>
+</body>
+</html>
