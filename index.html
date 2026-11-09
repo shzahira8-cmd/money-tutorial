@@ -16,7 +16,7 @@
         .font-heading { font-family: 'Fredoka', cursive; }
         .btn-bounce:active { transform: scale(0.96); }
         .tab-btn.active { background-color: #06b6d4; color: #0f172a; font-weight: 800; border-color: #22d3ee; }
-        .cyber-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .cyber-card { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.3); }
         @keyframes pulse-slow {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -27,7 +27,7 @@
 <body class="min-h-screen pb-12">
 
     <!-- Header Navigation (Ejen Ali Cyberaya Theme) -->
-    <header class="bg-slate-900/90 border-b border-cyan-500/30 sticky top-0 z-50 backdrop-blur">
+    <header class="bg-slate-900/95 border-b border-cyan-500/30 sticky top-0 z-50 backdrop-blur">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center space-x-3">
                 <div class="bg-cyan-500 text-slate-950 p-2.5 rounded-2xl shadow-lg font-extrabold text-xl animate-pulse-slow">
@@ -62,7 +62,7 @@
         </div>
 
         <!-- Navigation Tabs -->
-        <div class="bg-slate-950/60 border-t border-cyan-500/20">
+        <div class="bg-slate-950/80 border-t border-cyan-500/20">
             <div class="max-w-6xl mx-auto px-4 flex overflow-x-auto space-x-2 py-2 text-xs md:text-sm font-semibold scrollbar-none">
                 <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn active px-4 py-2 rounded-xl transition flex items-center gap-2 border border-transparent whitespace-nowrap">
                     <i class="fa-solid fa-gamepad"></i> <span data-bm="🛡️ Misi Ejen (Kuiz)" data-en="🛡️ Agent Mission">🛡️ Misi Ejen (Kuiz)</span>
@@ -87,8 +87,7 @@
         <section id="section-quiz" class="block">
             <div class="cyber-card rounded-3xl p-5 md:p-8 shadow-2xl relative">
                 
-                <!-- Comot & Ali Animated Greeting Banner -->
-                <div class="bg-gradient-to-r from-cyan-900/60 to-blue-900/60 border border-cyan-500/40 rounded-2xl p-3 mb-6 flex items-center gap-3">
+                <div class="bg-gradient-to-r from-cyan-950 to-blue-950 border border-cyan-500/40 rounded-2xl p-3 mb-6 flex items-center gap-3">
                     <div class="text-3xl animate-bounce">🐱</div>
                     <div>
                         <h4 class="text-xs font-bold text-cyan-300 uppercase tracking-wider" id="comot-banner-title">Comot & Ejen Ali Berkata:</h4>
@@ -96,36 +95,24 @@
                     </div>
                 </div>
 
-                <!-- Quiz Header Progress -->
                 <div class="flex justify-between items-center mb-4">
                     <span class="text-xs md:text-sm font-bold text-cyan-400 uppercase tracking-wider" id="quiz-progress-text">Misi 1 daripada 8</span>
                     <span class="text-xs font-semibold px-3 py-1 bg-cyan-950 text-cyan-300 border border-cyan-500/30 rounded-full" id="quiz-topic-tag">Topik: Tambah Wang</span>
                 </div>
 
-                <!-- Progress Bar -->
                 <div class="w-full bg-slate-800 h-3 rounded-full mb-6 overflow-hidden border border-slate-700">
                     <div id="quiz-progress-bar" class="bg-cyan-400 h-full w-[12.5%] transition-all duration-300"></div>
                 </div>
 
-                <!-- Question Card Box -->
-                <div id="quiz-card" class="bg-slate-900/80 border-2 border-cyan-500/30 rounded-2xl p-4 md:p-6 mb-6">
-                    <!-- Visual Aid Image / Icon area -->
-                    <div id="question-visual-box" class="flex justify-center items-center gap-4 py-4 mb-4 bg-slate-950 rounded-xl border border-slate-800 shadow-inner">
-                        <!-- Dynamic Visual Inserted via JS -->
-                    </div>
-
-                    <!-- Question Text -->
+                <div id="quiz-card" class="bg-slate-900/90 border-2 border-cyan-500/30 rounded-2xl p-4 md:p-6 mb-6">
+                    <div id="question-visual-box" class="flex justify-center items-center gap-4 py-4 mb-4 bg-slate-950 rounded-xl border border-slate-800 shadow-inner"></div>
                     <h2 id="question-text" class="text-base md:text-lg font-bold text-white text-center mb-2"></h2>
                     <p id="question-subtext" class="text-xs md:text-sm text-slate-400 text-center mb-4"></p>
                 </div>
 
-                <!-- Multiple Choice Options -->
-                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-                    <!-- Dynamic Options -->
-                </div>
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6"></div>
 
-                <!-- Step-by-Step Bentuk Lazim Solution (Hidden until answered) -->
-                <div id="solution-box" class="hidden mb-6 p-4 bg-emerald-950/60 border border-emerald-500/40 rounded-2xl">
+                <div id="solution-box" class="hidden mb-6 p-4 bg-emerald-950/80 border border-emerald-500/40 rounded-2xl">
                     <h4 class="font-bold text-emerald-300 text-sm mb-1 flex items-center gap-2">
                         <i class="fa-solid fa-laptop-code"></i>
                         <span data-bm="Analisis IRIS (Penyelesaian Bentuk Lazim):" data-en="IRIS Analysis (Standard Form Solution):">Analisis IRIS:</span>
@@ -133,10 +120,9 @@
                     <p id="solution-text" class="text-xs md:text-sm text-emerald-200 font-mono whitespace-pre-line"></p>
                 </div>
 
-                <!-- ALWAYS ACTIVE NAVIGATION BAR -->
                 <div class="pt-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3">
                     <p class="text-xs text-slate-400 font-medium text-center md:text-left" id="quiz-hint-text">
-                        Pilih jawapan dan teruskan misi seterusnya!
+                        Tekan butang di sebelah untuk ke misi seterusnya!
                     </p>
                     <button id="btn-next-question" onclick="nextQuestion()" class="w-full md:w-auto bg-cyan-500 hover:bg-cyan-400 active:bg-cyan-600 text-slate-950 font-extrabold px-8 py-3.5 rounded-2xl shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2 text-base btn-bounce">
                         <span id="btn-next-text">Misi Seterusnya</span>
@@ -147,7 +133,7 @@
             </div>
         </section>
 
-        <!-- TAB 2: AI VISUAL AID (MONEY PLACE VALUE) -->
+        <!-- TAB 2: AI VISUAL AID -->
         <section id="section-visualizer" class="hidden">
             <div class="cyber-card rounded-3xl p-6 md:p-8 shadow-2xl">
                 <div class="border-b border-slate-800 pb-4 mb-6">
@@ -155,7 +141,6 @@
                     <p class="text-xs md:text-sm text-slate-300" data-bm="Tekan wang kertas dan syiling Cyberaya untuk mengira jumlah nilai dan lihat susunan titik perpuluhan." data-en="Click Cyberaya banknotes & coins to calculate total value and decimal alignment.">Tekan wang kertas dan syiling untuk mengira jumlah nilai secara langsung!</p>
                 </div>
 
-                <!-- Live Money Counter Board -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div class="bg-slate-900 border border-cyan-500/40 p-4 rounded-2xl text-center md:col-span-1">
                         <span class="text-xs font-bold text-cyan-400 uppercase" data-bm="Jumlah Tenaga (Total)" data-en="Total Energy Amount">Jumlah Tenaga</span>
@@ -165,7 +150,6 @@
                         </button>
                     </div>
 
-                    <!-- Place Value Grid Breakdown -->
                     <div class="bg-slate-900 border border-amber-500/40 p-4 rounded-2xl md:col-span-2">
                         <span class="text-xs font-bold text-amber-400 uppercase block mb-2" data-bm="Carta Nilai Tempat M.A.T.A (Bentuk Lazim)" data-en="M.A.T.A Place Value Chart">Carta Nilai Tempat (Bentuk Lazim)</span>
                         <div class="grid grid-cols-5 text-center text-xs font-bold border-b border-amber-500/30 pb-1 text-amber-300">
@@ -185,7 +169,6 @@
                     </div>
                 </div>
 
-                <!-- Currency Buttons Grid -->
                 <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3" data-bm="Pilih Wang Kertas & Syiling Cyberaya" data-en="Select Cyberaya Notes & Coins">Pilih Wang Kertas & Syiling</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                     <button onclick="addMoney(100)" class="p-3 bg-purple-950 hover:bg-purple-900 border border-purple-500/40 rounded-xl font-bold text-purple-200 text-sm flex items-center justify-between">
@@ -216,50 +199,101 @@
             </div>
         </section>
 
-        <!-- TAB 3: CONCEPT EXPLANATION -->
+        <!-- TAB 3: CONCEPT EXPLANATION & INTERACTIVE SIMULATOR (GAMBAR 2) -->
         <section id="section-concept" class="hidden">
-            <div class="cyber-card rounded-3xl p-6 md:p-8 shadow-2xl">
-                <div class="border-b border-slate-800 pb-4 mb-6">
-                    <h2 class="text-xl font-bold text-cyan-400 font-heading" data-bm="💡 Protokol IRIS: Konsep Rumah Ringgit & Rumah Sen" data-en="💡 IRIS Protocol: Ringgit House & Sen House">💡 Protokol IRIS (Konsep AI)</h2>
-                    <p class="text-xs md:text-sm text-slate-300" data-bm="Sistem Pengumpulan Semula (Regrouping) ala Ejen Ali: 100 sen = RM 1.00" data-en="Ejen Ali Regrouping Concept: 100 sen = RM 1.00">Penerangan Konsep Pengumpulan Semula Wang</p>
+            <div class="cyber-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <h2 class="text-xl font-bold text-cyan-400 font-heading" data-bm="💡 Penjelasan Konsep AI: Pengumpulan Semula Sen" data-en="💡 AI Concept Explanation: Regrouping Sen">💡 Penjelasan Konsep AI: Pengumpulan Semula Sen</h2>
+                    <p class="text-xs md:text-sm text-slate-300" data-bm="Murid sering keliru apabila hasil tambah sen melebihi 99 sen (contoh: 80 sen + 50 sen = 130 sen). Berikut ialah strategi pengajaran AI secara berperingkat." data-en="Pupils often confuse when total sen exceeds 99 sen (e.g. 80 sen + 50 sen = 130 sen). Below is the step-by-step AI teaching strategy.">Murid sering keliru apabila hasil tambah sen melebihi 99 sen...</p>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="p-4 bg-slate-900/90 rounded-2xl border border-cyan-500/30">
-                        <h3 class="font-bold text-cyan-300 text-sm md:text-base flex items-center gap-2">
-                            <span class="bg-cyan-500 text-slate-950 rounded-full w-6 h-6 inline-flex items-center justify-center text-xs font-extrabold">1</span>
-                            <span data-bm="Analogi Markah IRIS (Rumah Ringgit vs Rumah Sen)" data-en="IRIS Score Analogy (Ringgit House vs Sen House)">Analogi Dua Rumah M.A.T.A</span>
-                        </h3>
-                        <p class="text-xs md:text-sm text-slate-300 mt-2 leading-relaxed" data-bm="Bayangkan data IRIS mempunyai dua zon: Zon Sen di sebelah kanan hanya boleh menampung maksimum 99 sen. Apabila ia mencapai 100 sen, memori penuh dan sistem automatik memindahkan '1' ke zon Rumah Ringgit di sebelah kiri!" data-en="Imagine IRIS data has two zones: The Sen Zone on the right can only hold up to 99 sen. Once it reaches 100 sen, memory is full and the system automatically transfers '1' to the Ringgit Zone on the left!">Bayangkan sistem data IRIS...</p>
+                <!-- 4 STEP CARDS (GAMBAR 2) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Step 1 -->
+                    <div class="p-4 bg-slate-900/90 rounded-2xl border border-cyan-500/40">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-cyan-500 text-slate-950 rounded-full w-6 h-6 inline-flex items-center justify-center font-extrabold text-xs">1</span>
+                            <h3 class="font-bold text-cyan-300 text-sm" data-bm="Langkah 1: Tambah Bahagian Sen Dahulu" data-en="Step 1: Add Sen Portion First">Langkah 1: Tambah Bahagian Sen Dahulu</h3>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed" data-bm="Pastikan titik perpuluhan selari. Tambah bahagian di sebelah kanan titik:" data-en="Ensure decimal points are aligned. Add the portion on the right of decimal:">Pastikan titik perpuluhan selari. Tambah bahagian di sebelah kanan titik:</p>
+                        <div class="mt-2 bg-slate-950 p-2 rounded-lg font-mono text-xs text-cyan-400 text-center font-bold">80 sen + 50 sen = 130 sen</div>
                     </div>
 
-                    <div class="p-4 bg-slate-900/90 rounded-2xl border border-amber-500/30">
-                        <h3 class="font-bold text-amber-300 text-sm md:text-base flex items-center gap-2">
-                            <span class="bg-amber-500 text-slate-950 rounded-full w-6 h-6 inline-flex items-center justify-center text-xs font-extrabold">2</span>
-                            <span data-bm="Langkah Keselamatan Bentuk Lazim" data-en="Standard Form Security Steps">Langkah Bentuk Lazim Penjumlahan Wang</span>
-                        </h3>
-                        <ol class="list-decimal list-inside text-xs md:text-sm text-slate-300 mt-2 space-y-1 font-medium">
-                            <li data-bm="Selaraskan kedudukan Titik Perpuluhan (.) dalam satu garisan tegak siber." data-en="Align the Decimal Points (.) strictly in a vertical cyber line.">Selaraskan titik perpuluhan dalam satu garisan tegak.</li>
-                            <li data-bm="Kira nilai Sen dahulu dari kanan ke kiri." data-en="Calculate the Sen value first from right to left.">Kira nilai Sen dahulu.</li>
-                            <li data-bm="Jika Sen ≥ 100, bawa masuk '1' ke rumah Ringgit." data-en="If Sen ≥ 100, carry '1' into the Ringgit house.">Jika Sen ≥ 100, bawa '1' ke rumah Ringgit.</li>
-                        </ol>
+                    <!-- Step 2 -->
+                    <div class="p-4 bg-slate-900/90 rounded-2xl border border-cyan-500/40">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-cyan-500 text-slate-950 rounded-full w-6 h-6 inline-flex items-center justify-center font-extrabold text-xs">2</span>
+                            <h3 class="font-bold text-cyan-300 text-sm" data-bm="Langkah 2: Semak Syarat &quot;Rumah Sen&quot;" data-en="Step 2: Check &quot;Sen House&quot; Condition">Langkah 2: Semak Syarat "Rumah Sen"</h3>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed" data-bm="&quot;Rumah Sen&quot; hanya boleh muat 2 digit sahaja (sehingga 99 sen). Oleh sebab 130 sen melebihi 99 sen, kita mesti pisahkan:" data-en="&quot;Sen House&quot; can only hold 2 digits (up to 99 sen). Since 130 sen exceeds 99 sen, we must separate:">"Rumah Sen" hanya boleh muat 2 digit sahaja (sehingga 99 sen)...</p>
+                        <div class="mt-2 bg-slate-950 p-2 rounded-lg font-mono text-xs text-amber-400 text-center font-bold">130 sen = 100 sen + 30 sen</div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="p-4 bg-slate-900/90 rounded-2xl border border-amber-500/40">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-amber-500 text-slate-950 rounded-full w-6 h-6 inline-flex items-center justify-center font-extrabold text-xs">3</span>
+                            <h3 class="font-bold text-amber-300 text-sm" data-bm="Langkah 3: Tukar 100 Sen kepada RM1.00" data-en="Step 3: Convert 100 Sen to RM1.00">Langkah 3: Tukar 100 Sen kepada RM1.00</h3>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed" data-bm="Tukar 100 sen ➡️ RM1.00. Kumpul semula (bawa) nilai RM1.00 ini ke Rumah Ringgit (sebelah kiri titik perpuluhan)." data-en="Convert 100 sen ➡️ RM1.00. Regroup (carry over) this RM1.00 to the Ringgit House (left side of decimal).">Tukar 100 sen ➡️ RM1.00. Kumpul semula nilai RM1.00 ini ke Rumah Ringgit...</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="p-4 bg-slate-900/90 rounded-2xl border border-emerald-500/40">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="bg-emerald-500 text-slate-950 rounded-full w-6 h-6 inline-flex items-center justify-center font-extrabold text-xs">4</span>
+                            <h3 class="font-bold text-emerald-300 text-sm" data-bm="Langkah 4: Tulis Baki Sen &amp; Tambah Ringgit" data-en="Step 4: Write Sen Balance &amp; Add Ringgit">Langkah 4: Tulis Baki Sen & Tambah Ringgit</h3>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed" data-bm="Tulis 30 sen di Rumah Sen. Kemudian tambah nilai RM1.00 tersebut bersama jumlah Ringgit yang lain." data-en="Write 30 sen in Sen House. Then add that RM1.00 value with the rest of the Ringgit.">Tulis 30 sen di Rumah Sen. Kemudian tambah nilai RM1.00 tersebut...</p>
                     </div>
                 </div>
+
+                <!-- SIMULASI INTERAKTIF (GAMBAR 2) -->
+                <div class="bg-purple-950 border-2 border-purple-500/50 p-5 rounded-2xl">
+                    <h3 class="font-bold text-purple-200 text-sm md:text-base mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-amber-400"></i>
+                        <span data-bm="Cuba Simulasi Pengumpulan Semula Sen:" data-en="Try Sen Regrouping Simulation:">Cuba Simulasi Pengumpulan Semula Sen:</span>
+                    </h3>
+                    
+                    <div class="flex flex-wrap items-center gap-3 mb-4">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs text-slate-300 font-medium">Nilai A (Sen):</label>
+                            <input type="number" id="sim-a" value="78" class="w-20 p-2 bg-slate-900 border border-purple-400 rounded-xl text-center text-sm font-bold text-cyan-300">
+                        </div>
+                        <span class="text-purple-300 font-bold">+</span>
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs text-slate-300 font-medium">Nilai B (Sen):</label>
+                            <input type="number" id="sim-b" value="50" class="w-20 p-2 bg-slate-900 border border-purple-400 rounded-xl text-center text-sm font-bold text-cyan-300">
+                        </div>
+                        <button onclick="runSenSimulation()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs shadow-md btn-bounce">
+                            Kira Konsep
+                        </button>
+                    </div>
+
+                    <!-- Output Box -->
+                    <div id="sim-output" class="bg-slate-950/90 border border-purple-500/30 p-4 rounded-xl font-mono text-xs space-y-1 text-slate-200">
+                        <div class="text-amber-300 font-bold">Hasil Tambah: 128 sen</div>
+                        <div class="text-emerald-400">➡️ 100 sen dikumpul semula menjadi <span class="font-bold">RM 1.00</span> (dibawa ke Rumah Ringgit).</div>
+                        <div class="text-cyan-300">➡️ Baki wang sen yang tinggal di Rumah Sen ialah <span class="font-bold">28 sen</span>.</div>
+                        <div class="text-white font-bold border-t border-slate-800 pt-1 mt-1">Jumlah Akhir: RM 1.28</div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- TAB 4: AI DOCS & PROMPT PORTFOLIO -->
+        <!-- TAB 4: AI DOCS & PROMPT PORTFOLIO (GAMBAR 1 / SOURCE 3) -->
         <section id="section-docs" class="hidden">
             <div class="cyber-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
                 <div>
-                    <h2 class="text-xl font-bold text-cyan-400 font-heading" data-bm="📋 Fail Rasmi M.A.T.A: Dokumen & Prompt AI" data-en="📋 M.A.T.A Official Files: AI Docs & Prompt">📋 Fail Rasmi M.A.T.A & Prompt</h2>
-                    <p class="text-xs text-slate-400" data-bm="Pematuhan DSKP Matematik Tahun 3 (WANG) & Tugasan Tutorial Minggu 11" data-en="Aligned with Year 3 KSSR Mathematics DSKP (MONEY) & Tutorial Week 11">Dokumentasi Projek Ejen Ali</p>
+                    <h2 class="text-xl font-bold text-cyan-400 font-heading" data-bm="📋 Dokumen Tugasan &amp; Prompt AI (DSKP Tahun 3)" data-en="📋 Task Documentation &amp; AI Prompt (DSKP Year 3)">📋 Dokumen Tugasan & Prompt AI</h2>
+                    <p class="text-xs text-slate-400" data-bm="Pematuhan Tutorial Minggu 11: AI-Driven Teaching and Learning" data-en="Week 11 Tutorial Alignment: AI-Driven Teaching and Learning">Mengikut semua spesifikasi modul tugasan</p>
                 </div>
 
-                <!-- Effective Prompt Box -->
+                <!-- 1. Prompt Box -->
                 <div class="bg-slate-950 text-slate-100 p-5 rounded-2xl border border-slate-800">
-                    <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider"><i class="fa-solid fa-terminal me-2"></i> Prompt Generatif AI Yang Digunakan</span>
+                    <div class="flex justify-between items-center mb-2 border-b border-slate-800 pb-2">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider"><i class="fa-solid fa-terminal me-2"></i> 1. The Final Prompt Used</span>
                     </div>
                     <pre class="text-xs font-mono text-cyan-300 whitespace-pre-wrap leading-relaxed">
 Role: Primary School Mathematics Specialist & Gamified Web Developer (Ejen Ali Theme)
@@ -274,11 +308,50 @@ Expected Output: A fully functional single-file interactive DLP web application 
                     </pre>
                 </div>
 
-                <!-- Reflection Statement -->
-                <div class="bg-slate-900 p-5 rounded-2xl border border-cyan-500/30">
-                    <h3 class="font-bold text-cyan-300 text-sm mb-2" data-bm="Refleksi M.A.T.A: Bagaimana AI Memperkasakan Pembelajaran Murid?" data-en="M.A.T.A Reflection: How AI Empowers Pupil Understanding">Refleksi Pembelajaran AI</h3>
-                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed" data-bm="Tema Ejen Ali dan elemen gamifikasi dalam aplikasi ini berjaya menarik minat murid Tahun 3 untuk meneroka topik wang dengan lebih seronok. Bahan visual interaktif membantu murid memahami konsep pertukaran sen kepada Ringgit dengan jelas, manakala maklum balas bentuk lazim membimbing pengiraan matematik mereka secara tepat." data-en="The Ejen Ali theme and gamification elements successfully engage Year 3 pupils in exploring the topic of money interactively. Interactive visual aids clarify the concept of regrouping sen to Ringgit, while step-by-step standard form feedback guides accurate mathematical computation.">Tema Ejen Ali dan elemen gamifikasi...</p>
+                <!-- ITEM 2 (GAMBAR 1) -->
+                <div class="p-5 bg-slate-900/90 rounded-2xl border border-cyan-500/30">
+                    <h3 class="font-bold text-cyan-300 text-sm mb-2 flex items-center gap-2">
+                        <span class="bg-cyan-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">2</span>
+                        <span>Mathematics Practice Activity (DSKP Year 3 / Tahun 3)</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Aktiviti mengandungi 8 soalan berasaskan DSKP Matematik Tahun 3 (Standard Kandungan 4.1 Tambah Wang, 4.2 Tolak Wang, 4.4 Darab Wang, 4.5 Bahagi Wang). Setiap soalan disertakan penyelesaian langkah demi langkah dalam bentuk lazim untuk pemahaman murid.
+                    </p>
                 </div>
+
+                <!-- ITEM 3 (GAMBAR 1) -->
+                <div class="p-5 bg-slate-900/90 rounded-2xl border border-cyan-500/30">
+                    <h3 class="font-bold text-cyan-300 text-sm mb-2 flex items-center gap-2">
+                        <span class="bg-cyan-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">3</span>
+                        <span>AI-Generated Visual Aid Documentation</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Visualizer interaktif menunjuk jawajaran titik perpuluhan secara tepat antara Ringgit dan Sen. Ia membolehkan murid menyusun nilai tempat (Ratus, Puluh, Sa, 10 Sen, 1 Sen) secara spasial untuk mengelakkan kesilapan menjajarkan nilai.
+                    </p>
+                </div>
+
+                <!-- ITEM 4 (GAMBAR 1) -->
+                <div class="p-5 bg-slate-900/90 rounded-2xl border border-amber-500/30">
+                    <h3 class="font-bold text-amber-300 text-sm mb-2 flex items-center gap-2">
+                        <span class="bg-amber-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">4</span>
+                        <span>Classroom-Ready Concept Explanation</span>
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Penggunaan analogi "Rumah Sen" (maksimum 99 sen) dan "Rumah Ringgit" memudahkan murid memahami mengapa 100 sen perlu ditukar menjadi RM1.00 dan dibawa ke lajur sebelah kiri.
+                    </p>
+                </div>
+
+                <!-- ITEM 5 REFLECTION STATEMENT (GAMBAR 1) -->
+                <div class="p-5 bg-emerald-950/80 rounded-2xl border border-emerald-500/40">
+                    <h3 class="font-bold text-emerald-300 text-sm mb-2 flex items-center gap-2">
+                        <span class="bg-emerald-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">5</span>
+                        <span>Statement on How AI Supports Mathematical Understanding</span>
+                    </h3>
+                    <p class="text-xs md:text-sm text-emerald-100 italic leading-relaxed font-serif">
+                        "Generative AI significantly enhances primary pupils' mathematical understanding by transforming abstract numerical processes into interactive, visually grounded experiences. In this resource, AI facilitates instant corrective feedback, step-by-step 'bentuk lazim' / standard form scaffolding, and dynamic place-value visualizers. By gamifying practice and concretizing the carry-over mechanism (100 sen = RM1.00) through intuitive visual tools, AI reduces cognitive load, fosters self-directed practice, and reinforces conceptual mastery aligned with KSSR standards."
+                    </p>
+                </div>
+
             </div>
         </section>
 
@@ -286,7 +359,6 @@ Expected Output: A fully functional single-file interactive DLP web application 
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Quiz Dataset (Bilingual DLP Ejen Ali Theme)
         const quizData = [
             {
                 id: 1,
@@ -378,21 +450,19 @@ Expected Output: A fully functional single-file interactive DLP web application 
             }
         ];
 
-        // Application State
         let currentLang = 'bm';
         let currentQuestionIndex = 0;
         let score = 0;
         let userAnswers = new Array(quizData.length).fill(null);
         let currentVisTotal = 0.00;
 
-        // Initialize App
         window.addEventListener('DOMContentLoaded', () => {
             renderQuestion();
             updateVisualizerDisplay();
             updateAgentRank();
+            runSenSimulation();
         });
 
-        // Language Switcher
         function toggleLanguage() {
             currentLang = currentLang === 'bm' ? 'en' : 'bm';
             document.getElementById('lang-btn-text').innerText = currentLang === 'bm' ? 'Switch to English' : 'Tukar ke B. Melayu';
@@ -404,7 +474,6 @@ Expected Output: A fully functional single-file interactive DLP web application 
             renderQuestion();
         }
 
-        // Tab Switching
         function switchTab(tabName) {
             ['quiz', 'visualizer', 'concept', 'docs'].forEach(t => {
                 const sec = document.getElementById(`section-${t}`);
@@ -419,7 +488,6 @@ Expected Output: A fully functional single-file interactive DLP web application 
             });
         }
 
-        // Update Agent Rank based on Score
         function updateAgentRank() {
             const rankEl = document.getElementById('agent-rank');
             if (score < 30) {
@@ -431,7 +499,6 @@ Expected Output: A fully functional single-file interactive DLP web application 
             }
         }
 
-        // Render Current Quiz Question
         function renderQuestion() {
             const q = quizData[currentQuestionIndex];
             
@@ -483,10 +550,8 @@ Expected Output: A fully functional single-file interactive DLP web application 
             }
         }
 
-        // Option Selection Handler
         function selectOption(optionIndex) {
             const q = quizData[currentQuestionIndex];
-            
             if (userAnswers[currentQuestionIndex] === null) {
                 if (optionIndex === q.correct) {
                     score += 10;
@@ -494,12 +559,10 @@ Expected Output: A fully functional single-file interactive DLP web application 
                     updateAgentRank();
                 }
             }
-            
             userAnswers[currentQuestionIndex] = optionIndex;
             renderQuestion();
         }
 
-        // ALWAYS ACTIVE Next Question Action
         function nextQuestion() {
             if (userAnswers[currentQuestionIndex] === null) {
                 selectOption(0);
@@ -516,7 +579,6 @@ Expected Output: A fully functional single-file interactive DLP web application 
             }
         }
 
-        // Money Visualizer Controls
         function addMoney(amount) {
             currentVisTotal += amount;
             updateVisualizerDisplay();
@@ -529,7 +591,6 @@ Expected Output: A fully functional single-file interactive DLP web application 
 
         function updateVisualizerDisplay() {
             document.getElementById('vis-total-display').innerText = `RM ${currentVisTotal.toFixed(2)}`;
-            
             const totalStr = currentVisTotal.toFixed(2);
             const parts = totalStr.split('.');
             const rmVal = parseInt(parts[0]);
@@ -544,6 +605,25 @@ Expected Output: A fully functional single-file interactive DLP web application 
             grid.children[1].innerText = tenDigit;
             grid.children[2].innerText = oneDigit;
             grid.children[4].innerText = senVal;
+        }
+
+        // Interactive Sen Simulation function (Gambar 2 / Source 4)
+        function runSenSimulation() {
+            const a = parseInt(document.getElementById('sim-a').value) || 0;
+            const b = parseInt(document.getElementById('sim-b').value) || 0;
+            const totalSen = a + b;
+            
+            const rmPart = (Math.floor(totalSen / 100)).toFixed(2);
+            const senBalance = totalSen % 100;
+            const finalTotal = (totalSen / 100).toFixed(2);
+
+            const out = document.getElementById('sim-output');
+            out.innerHTML = `
+                <div class="text-amber-300 font-bold">Hasil Tambah: ${totalSen} sen</div>
+                <div class="text-emerald-400">➡️ 100 sen dikumpul semula menjadi <span class="font-bold">RM 1.00</span> (dibawa ke Rumah Ringgit).</div>
+                <div class="text-cyan-300">➡️ Baki wang sen yang tinggal di Rumah Sen ialah <span class="font-bold">${senBalance} sen</span>.</div>
+                <div class="text-white font-bold border-t border-slate-800 pt-1 mt-1">Jumlah Akhir: RM ${finalTotal}</div>
+            `;
         }
     </script>
 </body>
