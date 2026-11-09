@@ -2,88 +2,192 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Year 3 DLP Math: Money Master Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Money Runner: Treasure Island (Year 3 DLP Math)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Fredoka', sans-serif; background-color: #f0fdf4; }
-        .bubbly-btn { transition: all 0.15s ease-in-out; }
+        body { font-family: 'Fredoka', sans-serif; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+        canvas { touch-action: none; }
+        .bubbly-btn { transition: transform 0.1s ease, box-shadow 0.1s ease; }
         .bubbly-btn:active { transform: scale(0.95); }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 overflow-hidden">
 
     <!-- Game Container -->
-    <div class="bg-white border-4 border-emerald-400 rounded-3xl shadow-2xl max-w-xl w-full p-6 text-slate-800">
+    <div class="relative w-full max-w-lg bg-slate-800 rounded-3xl border-4 border-emerald-500 shadow-2xl overflow-hidden flex flex-col items-center">
         
-        <!-- Header / Scoreboard -->
-        <div class="flex items-center justify-between bg-emerald-100 p-4 rounded-2xl mb-6">
-            <div>
-                <h1 class="text-2xl font-bold text-emerald-800">🛒 Shopping Spree!</h1>
-                <p class="text-xs text-emerald-600 font-semibold">Year 3 DLP Mathematics (Money Topic)</p>
+        <!-- HUD Header -->
+        <div class="w-full bg-emerald-700/90 p-3 sm:p-4 flex items-center justify-between z-10 border-b-4 border-emerald-900">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🏃</span>
+                <div>
+                    <h1 class="text-base sm:text-lg font-extrabold leading-none text-yellow-300">Money Runner</h1>
+                    <p class="text-[10px] sm:text-xs text-emerald-200 font-bold">Year 3 DLP • Topic: Money</p>
+                </div>
             </div>
-            <div class="flex items-center bg-yellow-300 px-4 py-2 rounded-full border-2 border-yellow-500 shadow-sm">
-                <span class="text-xl mr-1">⭐</span>
-                <span id="score" class="font-bold text-xl text-yellow-900">0</span>
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center bg-yellow-400 text-slate-900 font-extrabold px-3 py-1 rounded-full text-sm shadow">
+                    <span class="mr-1">🐷</span>
+                    <span>RM <span id="hud-money">0.00</span></span>
+                </div>
+                <button onclick="toggleAudio()" id="audio-btn" class="bg-emerald-800 p-2 rounded-full text-xs">🔊</button>
             </div>
         </div>
 
-        <!-- Question Screen -->
-        <div id="quiz-box" class="block">
-            <div class="flex justify-between items-center mb-2 text-sm text-slate-500 font-bold">
-                <span id="question-number">Question 1 of 5</span>
-                <span id="question-category" class="bg-emerald-200 text-emerald-800 px-3 py-1 rounded-full text-xs">Addition</span>
-            </div>
-            
-            <!-- Progress Bar -->
-            <div class="w-full bg-slate-200 h-3 rounded-full mb-6 overflow-hidden">
-                <div id="progress-bar" class="bg-emerald-500 h-full w-1/5 transition-all duration-300"></div>
+        <!-- Canvas Game Screen -->
+        <div class="relative w-full h-[450px] sm:h-[500px] bg-slate-900 overflow-hidden flex justify-center items-center">
+            <canvas id="gameCanvas" class="w-full h-full block"></canvas>
+
+            <!-- Touch Lane Controls Overlay -->
+            <div class="absolute inset-0 flex z-0">
+                <div onclick="moveLane(-1)" class="w-1/2 h-full"></div>
+                <div onclick="moveLane(1)" class="w-1/2 h-full"></div>
             </div>
 
-            <!-- Item Display / Scenario -->
-            <div class="bg-emerald-50 border-2 border-emerald-200 p-6 rounded-2xl text-center mb-6">
-                <div id="item-icon" class="text-5xl mb-2">✏️</div>
-                <p id="question-text" class="text-lg font-bold text-slate-700">Aiman buys a pencil case for RM14.20 and a ruler for RM3.50. How much is the total cost?</p>
+            <!-- Start / Game Over Screen Overlay -->
+            <div id="start-overlay" class="absolute inset-0 bg-slate-900/95 flex flex-col items-center justify-center p-6 text-center z-20">
+                <div class="text-6xl mb-3 animate-bounce">🏝️</div>
+                <h2 class="text-3xl font-extrabold text-yellow-400 mb-2">Treasure Island!</h2>
+                <p class="text-sm text-slate-300 mb-6">Swipe or use <span class="text-yellow-300 font-bold">Left / Right Arrows</span> to collect Ringgit, dodge obstacles, and answer Math Quests!</p>
+                <button onclick="startGame()" class="bubbly-btn bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-extrabold text-xl px-8 py-4 rounded-2xl border-b-4 border-emerald-700 shadow-xl">
+                    🚀 START RUNNING
+                </button>
             </div>
 
-            <!-- Answer Options -->
-            <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                <!-- Dynamic Buttons will render here -->
+            <!-- Math Question Modal -->
+            <div id="math-modal" class="hidden absolute inset-0 bg-slate-950/95 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-30">
+                <div class="bg-slate-800 border-4 border-yellow-400 rounded-3xl p-5 w-full shadow-2xl">
+                    <div class="flex justify-between items-center mb-3">
+                        <span id="quest-tag" class="bg-yellow-400 text-slate-900 text-xs font-black px-3 py-1 rounded-full uppercase">Math Quest</span>
+                        <span class="text-xs text-slate-400 font-bold">Answer to continue!</span>
+                    </div>
+
+                    <div id="quest-icon" class="text-4xl mb-2">✏️</div>
+                    <p id="quest-text" class="text-base sm:text-lg font-bold text-white mb-4">Aiman buys a pencil box for RM14.20 and a ruler for RM3.50. How much is the total?</p>
+
+                    <div id="quest-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                        <!-- Options generated dynamically -->
+                    </div>
+
+                    <div id="quest-feedback" class="hidden p-3 rounded-xl font-bold text-sm mb-2"></div>
+                    <button id="quest-continue-btn" onclick="resumeGameAfterQuest()" class="hidden w-full bg-emerald-500 text-slate-900 font-black py-3 rounded-xl text-base shadow-lg">
+                        Continue Run ➡️
+                    </button>
+                </div>
             </div>
 
-            <!-- Feedback Area -->
-            <div id="feedback" class="hidden p-4 rounded-xl text-center font-bold text-lg mb-4"></div>
+            <!-- Finish / Certificate Screen -->
+            <div id="finish-screen" class="hidden absolute inset-0 bg-slate-950/95 flex flex-col items-center justify-center p-6 text-center z-30">
+                <div class="text-5xl mb-2">🏆</div>
+                <h2 class="text-2xl font-black text-yellow-400 mb-1">RUN COMPLETE!</h2>
+                <p class="text-xs text-slate-300 mb-4">You solved all Math Quests and saved money!</p>
 
-            <!-- Next Button -->
-            <button id="next-btn" onclick="nextQuestion()" class="w-full py-4 bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-lg border-b-4 border-emerald-700 bubbly-btn hover:bg-emerald-600">
-                Next Question ➡️
+                <div class="bg-slate-800 border-2 border-yellow-400/50 rounded-2xl p-4 w-full mb-4 text-left">
+                    <p class="text-xs text-slate-400 font-bold">TOTAL SAVINGS (TABUNG)</p>
+                    <p class="text-3xl font-black text-emerald-400">RM <span id="final-savings">0.00</span></p>
+                    <p class="text-xs text-slate-400 font-bold mt-2">MATH QUEST SCORE</p>
+                    <p class="text-xl font-bold text-yellow-300"><span id="final-score">0</span> / 4 Correct</p>
+                </div>
+
+                <div class="flex gap-2 w-full">
+                    <button onclick="startGame()" class="flex-1 bubbly-btn bg-emerald-500 text-slate-900 font-extrabold py-3 rounded-xl text-sm">
+                        🔄 Play Again
+                    </button>
+                    <button onclick="window.print()" class="flex-1 bubbly-btn bg-yellow-400 text-slate-900 font-extrabold py-3 rounded-xl text-sm">
+                        🖨️ Print Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- On-Screen Controls for Mobile / Tablet -->
+        <div class="w-full bg-slate-900 p-3 flex justify-between gap-3 border-t-2 border-slate-700 z-10">
+            <button onclick="moveLane(-1)" class="flex-1 bubbly-btn bg-slate-700 hover:bg-slate-600 active:bg-emerald-600 text-2xl py-3 rounded-2xl font-black border-b-4 border-slate-950">
+                ⬅️ LEFT
+            </button>
+            <button onclick="moveLane(1)" class="flex-1 bubbly-btn bg-slate-700 hover:bg-slate-600 active:bg-emerald-600 text-2xl py-3 rounded-2xl font-black border-b-4 border-slate-950">
+                RIGHT ➡️
             </button>
         </div>
-
-        <!-- Result / Reward Screen -->
-        <div id="result-box" class="hidden text-center py-6">
-            <div class="text-6xl mb-3">🏆</div>
-            <h2 class="text-3xl font-bold text-emerald-800 mb-2">Congratulations!</h2>
-            <p class="text-slate-600 text-lg mb-6">You are now an official <br><span class="text-emerald-600 font-bold text-xl">Young Money Master! 💰</span></p>
-
-            <div class="bg-yellow-50 border-2 border-yellow-300 rounded-2xl p-6 mb-6">
-                <p class="text-sm font-bold text-yellow-800 mb-1">FINAL SCORE</p>
-                <p id="final-score" class="text-5xl font-black text-yellow-600">5 / 5</p>
-            </div>
-
-            <button onclick="restartGame()" class="w-full py-4 bg-emerald-500 text-white font-bold text-lg rounded-2xl shadow-lg border-b-4 border-emerald-700 bubbly-btn hover:bg-emerald-600">
-                🔄 Play Again
-            </button>
-        </div>
-
     </div>
 
     <script>
-        const questions = [
+        // --- Web Audio API FX ---
+        let audioCtx = null;
+        let audioMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playSound(type) {
+            if (audioMuted || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.1);
+                osc.frequency.setValueAtTime(783.99, now + 0.2);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(250, now);
+                osc.frequency.linearRampToValueAtTime(150, now + 0.2);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            }
+        }
+
+        function toggleAudio() {
+            audioMuted = !audioMuted;
+            document.getElementById('audio-btn').innerText = audioMuted ? '🔇' : '🔊';
+        }
+
+        // --- Game Logic & Canvas Engine ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let gameState = 'START'; // START, RUNNING, QUEST, FINISH
+        let targetLane = 1; // 0: Left, 1: Middle, 2: Right
+        let currentX = 1; 
+        let moneyCollected = 0;
+        let lastTime = 0;
+        let speed = 0.5;
+        let distanceRun = 0;
+        let mathScore = 0;
+        let questIndex = 0;
+
+        const mathQuests = [
             {
                 icon: "✏️📏",
-                category: "Addition",
+                tag: "Addition",
                 text: "Aiman buys a pencil box for RM14.20 and a ruler for RM3.50. What is the total cost?",
                 options: ["RM17.50", "RM17.70", "RM18.20", "RM17.20"],
                 correct: 1,
@@ -91,15 +195,15 @@
             },
             {
                 icon: "📚",
-                category: "Subtraction & Change",
-                text: "Maya pays RM50.00 to buy a storybook that costs RM18.40. How much change (baki) does she get?",
+                tag: "Subtraction & Change",
+                text: "Maya pays RM50.00 to buy a storybook costing RM18.40. How much change (baki) does she receive?",
                 options: ["RM32.60", "RM31.60", "RM31.40", "RM32.40"],
                 correct: 1,
                 explanation: "RM50.00 - RM18.40 = RM31.60"
             },
             {
                 icon: "🐷💰",
-                category: "Addition",
+                tag: "Addition",
                 text: "Siti saves RM25.50 in January and RM34.40 in February. What is her total savings?",
                 options: ["RM59.90", "RM59.50", "RM60.90", "RM58.90"],
                 correct: 0,
@@ -107,106 +211,263 @@
             },
             {
                 icon: "🎒🍾",
-                category: "Problem Solving",
-                text: "Adam buys a school bag for RM42.00 and a water bottle for RM15.50. What is the total price?",
+                tag: "Problem Solving",
+                text: "Adam buys a bag for RM42.00 and a water bottle for RM15.50. What is the total price?",
                 options: ["RM57.00", "RM58.50", "RM57.50", "RM56.50"],
                 correct: 2,
                 explanation: "RM42.00 + RM15.50 = RM57.50"
-            },
-            {
-                icon: "🎮",
-                category: "Financial Literacy",
-                text: "Sarah wants a RM75.00 game. She has RM48.20. How much more money does she need to save?",
-                options: ["RM26.80", "RM27.80", "RM26.20", "RM27.20"],
-                correct: 0,
-                explanation: "RM75.00 - RM48.20 = RM26.80"
             }
         ];
 
-        let currentQuestion = 0;
-        let score = 0;
-        let selectedOption = null;
+        let gameObjects = []; // Coins, Notes, Quest Gates, Obstacles
 
-        function loadQuestion() {
-            selectedOption = null;
-            const q = questions[currentQuestion];
-            
-            document.getElementById('question-number').innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
-            document.getElementById('question-category').innerText = q.category;
-            document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
-            document.getElementById('item-icon').innerText = q.icon;
-            document.getElementById('question-text').innerText = q.text;
+        function spawnObjects() {
+            gameObjects = [];
+            const laneX = [0, 1, 2];
 
-            const feedback = document.getElementById('feedback');
-            feedback.className = "hidden p-4 rounded-xl text-center font-bold text-lg mb-4";
-
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
-
-            q.options.forEach((option, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'w-full py-3 px-4 bg-slate-100 border-2 border-slate-300 rounded-xl text-left font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-400 bubbly-btn flex justify-between items-center';
-                btn.onclick = () => selectOption(index, btn);
-                btn.innerHTML = `<span>${option}</span> <span class="text-xs bg-slate-200 px-2 py-1 rounded text-slate-500 font-semibold">${String.fromCharCode(65 + index)}</span>`;
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function selectOption(index, buttonElement) {
-            if (selectedOption !== null) return; // Prevent multiple clicks
-            selectedOption = index;
-
-            const q = questions[currentQuestion];
-            const feedback = document.getElementById('feedback');
-            feedback.classList.remove('hidden');
-
-            const allButtons = document.getElementById('options-container').children;
-
-            if (index === q.correct) {
-                score++;
-                document.getElementById('score').innerText = score;
-                buttonElement.className = 'w-full py-3 px-4 bg-emerald-500 text-white border-2 border-emerald-600 rounded-xl text-left font-bold flex justify-between items-center';
-                feedback.innerHTML = `✅ Correct! <br><span class="text-sm font-normal">${q.explanation}</span>`;
-                feedback.classList.add('bg-emerald-100', 'text-emerald-800', 'border-2', 'border-emerald-300');
-            } else {
-                buttonElement.className = 'w-full py-3 px-4 bg-rose-500 text-white border-2 border-rose-600 rounded-xl text-left font-bold flex justify-between items-center';
-                allButtons[q.correct].className = 'w-full py-3 px-4 bg-emerald-500 text-white border-2 border-emerald-600 rounded-xl text-left font-bold flex justify-between items-center';
-                feedback.innerHTML = `❌ Oops! <br><span class="text-sm font-normal">${q.explanation}</span>`;
-                feedback.classList.add('bg-rose-100', 'text-rose-800', 'border-2', 'border-rose-300');
+            // Distance-based placement
+            for (let d = 2; d < 30; d += 2) {
+                // Spawn Math Gate at specific checkpoints
+                if (d === 6 || d === 13 || d === 20 || d === 27) {
+                    gameObjects.push({
+                        type: 'gate',
+                        lane: 1,
+                        z: d,
+                        questIdx: (d === 6 ? 0 : d === 13 ? 1 : d === 20 ? 2 : 3)
+                    });
+                } else {
+                    // Random Money & Coins
+                    let lane = laneX[Math.floor(Math.random() * laneX.length)];
+                    let moneyVal = Math.random() > 0.5 ? 1.0 : 5.0;
+                    gameObjects.push({
+                        type: 'money',
+                        lane: lane,
+                        z: d,
+                        val: moneyVal
+                    });
+                }
             }
         }
 
-        function nextQuestion() {
-            if (selectedOption === null && currentQuestion < questions.length) {
-                alert("Please select an answer first! 😊");
+        function moveLane(dir) {
+            initAudio();
+            targetLane = Math.max(0, Math.min(2, targetLane + dir));
+        }
+
+        // Keyboard inputs
+        window.addEventListener('keydown', (e) => {
+            if (gameState !== 'RUNNING') return;
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') moveLane(-1);
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') moveLane(1);
+        });
+
+        // Touch Swipe Handling
+        let touchStartX = 0;
+        canvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', (e) => {
+            let touchEndX = e.changedTouches[0].clientX;
+            let diffX = touchEndX - touchStartX;
+            if (Math.abs(diffX) > 30) {
+                if (diffX > 0) moveLane(1);
+                else moveLane(-1);
+            }
+        }, { passive: true });
+
+        function startGame() {
+            initAudio();
+            moneyCollected = 0;
+            targetLane = 1;
+            currentX = 1;
+            distanceRun = 0;
+            mathScore = 0;
+            questIndex = 0;
+            speed = 3.5;
+            document.getElementById('hud-money').innerText = "0.00";
+            document.getElementById('start-overlay').classList.add('hidden');
+            document.getElementById('finish-screen').classList.add('hidden');
+            document.getElementById('math-modal').classList.add('hidden');
+            spawnObjects();
+            gameState = 'RUNNING';
+            lastTime = performance.now();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function triggerQuest(questIdx) {
+            gameState = 'QUEST';
+            const q = mathQuests[questIdx];
+            document.getElementById('quest-tag').innerText = q.tag;
+            document.getElementById('quest-icon').innerText = q.icon;
+            document.getElementById('quest-text').innerText = q.text;
+
+            const feedback = document.getElementById('quest-feedback');
+            feedback.className = "hidden p-3 rounded-xl font-bold text-sm mb-2";
+            document.getElementById('quest-continue-btn').classList.add('hidden');
+
+            const container = document.getElementById('quest-options');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full py-3 px-4 bg-slate-700 hover:bg-slate-600 border-2 border-slate-500 rounded-xl font-bold text-left flex justify-between bubbly-btn';
+                btn.onclick = () => answerQuest(idx, q.correct, q.explanation, btn);
+                btn.innerHTML = `<span>${opt}</span> <span class="text-xs bg-slate-600 px-2 py-0.5 rounded">${String.fromCharCode(65 + idx)}</span>`;
+                container.appendChild(btn);
+            });
+
+            document.getElementById('math-modal').classList.remove('hidden');
+        }
+
+        function answerQuest(selected, correct, explanation, btn) {
+            const feedback = document.getElementById('quest-feedback');
+            feedback.classList.remove('hidden');
+
+            if (selected === correct) {
+                playSound('correct');
+                mathScore++;
+                moneyCollected += 10.00; // Bonus reward!
+                document.getElementById('hud-money').innerText = moneyCollected.toFixed(2);
+                btn.className = 'w-full py-3 px-4 bg-emerald-500 text-slate-900 border-2 border-emerald-400 rounded-xl font-black text-left flex justify-between';
+                feedback.className = 'p-3 rounded-xl font-bold text-sm mb-2 bg-emerald-900/80 text-emerald-200 border border-emerald-500';
+                feedback.innerHTML = `✅ Excellent! +RM10.00 Bonus! <br><span class="text-xs font-normal">${explanation}</span>`;
+            } else {
+                playSound('wrong');
+                btn.className = 'w-full py-3 px-4 bg-rose-500 text-white border-2 border-rose-400 rounded-xl font-black text-left flex justify-between';
+                feedback.className = 'p-3 rounded-xl font-bold text-sm mb-2 bg-rose-900/80 text-rose-200 border border-rose-500';
+                feedback.innerHTML = `❌ Not quite! <br><span class="text-xs font-normal">${explanation}</span>`;
+            }
+
+            // Show continue button
+            document.getElementById('quest-continue-btn').classList.remove('hidden');
+        }
+
+        function resumeGameAfterQuest() {
+            document.getElementById('math-modal').classList.add('hidden');
+            gameState = 'RUNNING';
+            lastTime = performance.now();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function finishRun() {
+            gameState = 'FINISH';
+            document.getElementById('final-savings').innerText = moneyCollected.toFixed(2);
+            document.getElementById('final-score').innerText = mathScore;
+            document.getElementById('finish-screen').classList.remove('hidden');
+        }
+
+        // --- Render Loop (Smooth Canvas Perspective Projection) ---
+        function gameLoop(timestamp) {
+            if (gameState !== 'RUNNING') return;
+
+            let delta = (timestamp - lastTime) / 1000;
+            lastTime = timestamp;
+            if (delta > 0.1) delta = 0.1; // Cap delta frame jumps
+
+            distanceRun += speed * delta;
+
+            // Smooth horizontal lane transition
+            currentX += (targetLane - currentX) * 12 * delta;
+
+            // Clear Screen
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 3D Perspective Setup
+            const horizonY = canvas.height * 0.35;
+            const vanishingX = canvas.width * 0.5;
+            const bottomY = canvas.height;
+
+            // Draw Track / Road
+            ctx.fillStyle = '#1e293b';
+            ctx.beginPath();
+            ctx.moveTo(vanishingX - 20, horizonY);
+            ctx.lineTo(vanishingX + 20, horizonY);
+            ctx.lineTo(canvas.width * 0.95, bottomY);
+            ctx.lineTo(canvas.width * 0.05, bottomY);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw Lane Dividers
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            for (let l = 1; l <= 2; l++) {
+                let topLx = vanishingX + (l - 1.5) * 12;
+                let botLx = vanishingX + (l - 1.5) * (canvas.width * 0.3);
+                ctx.beginPath();
+                ctx.moveTo(topLx, horizonY);
+                ctx.lineTo(botLx, bottomY);
+                ctx.stroke();
+            }
+
+            // Process & Draw Objects
+            for (let i = gameObjects.length - 1; i >= 0; i--) {
+                let obj = gameObjects[i];
+                let relZ = obj.z - distanceRun;
+
+                if (relZ <= 0) {
+                    // Passed object / Collision check
+                    if (Math.abs(obj.z - distanceRun) < 0.4) {
+                        if (obj.type === 'money' && Math.abs(currentX - obj.lane) < 0.4 && !obj.collected) {
+                            obj.collected = true;
+                            moneyCollected += obj.val;
+                            playSound('coin');
+                            document.getElementById('hud-money').innerText = moneyCollected.toFixed(2);
+                        } else if (obj.type === 'gate' && !obj.triggered) {
+                            obj.triggered = true;
+                            triggerQuest(obj.questIdx);
+                            return;
+                        }
+                    }
+                }
+
+                if (relZ > 0 && relZ < 25) {
+                    // Perspective projection
+                    let pScale = 1 / relZ;
+                    let objY = horizonY + (bottomY - horizonY) * (1 - relZ / 25);
+                    let laneWidth = (canvas.width * 0.6) * (1 - relZ / 25);
+                    let objX = vanishingX + (obj.lane - 1) * (laneWidth * 0.45);
+                    let size = Math.max(10, 60 * pScale * 4);
+
+                    if (obj.type === 'money' && !obj.collected) {
+                        ctx.fillStyle = obj.val === 1.0 ? '#38bdf8' : '#4ade80';
+                        ctx.beginPath();
+                        ctx.arc(objX, objY, size * 0.5, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'bold 10px Fredoka';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('RM' + obj.val, objX, objY + 3);
+                    } else if (obj.type === 'gate') {
+                        ctx.fillStyle = '#facc15';
+                        ctx.fillRect(objX - size * 1.5, objY - size, size * 3, size * 0.4);
+                        ctx.fillStyle = '#0f172a';
+                        ctx.font = 'bold 9px Fredoka';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('MATH QUEST', objX, objY - size * 0.2);
+                    }
+                }
+            }
+
+            // Draw Player Character (Smooth Lane Position)
+            let playerY = bottomY - 50;
+            let playerLaneWidth = canvas.width * 0.6 * 0.45;
+            let playerX = vanishingX + (currentX - 1) * playerLaneWidth;
+
+            // Player Avatar (Emoji Runner)
+            ctx.font = '40px Fredoka';
+            ctx.textAlign = 'center';
+            ctx.fillText('🏃', playerX, playerY);
+
+            // Check End of Run
+            if (distanceRun >= 28) {
+                finishRun();
                 return;
             }
 
-            currentQuestion++;
-            if (currentQuestion < questions.length) {
-                loadQuestion();
-            } else {
-                showResults();
-            }
+            requestAnimationFrame(gameLoop);
         }
-
-        function showResults() {
-            document.getElementById('quiz-box').classList.add('hidden');
-            document.getElementById('result-box').classList.remove('hidden');
-            document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
-        }
-
-        function restartGame() {
-            currentQuestion = 0;
-            score = 0;
-            document.getElementById('score').innerText = score;
-            document.getElementById('result-box').classList.add('hidden');
-            document.getElementById('quiz-box').classList.remove('hidden');
-            loadQuestion();
-        }
-
-        // Initialize first question on load
-        loadQuestion();
     </script>
 </body>
 </html>
