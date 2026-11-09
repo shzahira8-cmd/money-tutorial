@@ -199,7 +199,7 @@
             </div>
         </section>
 
-        <!-- TAB 3: CONCEPT EXPLANATION & INTERACTIVE SIMULATOR (GAMBAR 2) -->
+        <!-- TAB 3: CONCEPT EXPLANATION & INTERACTIVE SIMULATOR -->
         <section id="section-concept" class="hidden">
             <div class="cyber-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
                 <div class="border-b border-slate-800 pb-4">
@@ -207,7 +207,7 @@
                     <p class="text-xs md:text-sm text-slate-300" data-bm="Murid sering keliru apabila hasil tambah sen melebihi 99 sen (contoh: 80 sen + 50 sen = 130 sen). Berikut ialah strategi pengajaran AI secara berperingkat." data-en="Pupils often confuse when total sen exceeds 99 sen (e.g. 80 sen + 50 sen = 130 sen). Below is the step-by-step AI teaching strategy.">Murid sering keliru apabila hasil tambah sen melebihi 99 sen...</p>
                 </div>
 
-                <!-- 4 STEP CARDS (GAMBAR 2) -->
+                <!-- 4 STEP CARDS -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Step 1 -->
                     <div class="p-4 bg-slate-900/90 rounded-2xl border border-cyan-500/40">
@@ -248,7 +248,7 @@
                     </div>
                 </div>
 
-                <!-- SIMULASI INTERAKTIF (GAMBAR 2) -->
+                <!-- SIMULASI INTERAKTIF -->
                 <div class="bg-purple-950 border-2 border-purple-500/50 p-5 rounded-2xl">
                     <h3 class="font-bold text-purple-200 text-sm md:text-base mb-3 flex items-center gap-2">
                         <i class="fa-solid fa-calculator text-amber-400"></i>
@@ -282,7 +282,7 @@
             </div>
         </section>
 
-        <!-- TAB 4: AI DOCS & PROMPT PORTFOLIO (GAMBAR 1 / SOURCE 3) -->
+        <!-- TAB 4: AI DOCS & PROMPT PORTFOLIO -->
         <section id="section-docs" class="hidden">
             <div class="cyber-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
                 <div>
@@ -308,7 +308,7 @@ Expected Output: A fully functional single-file interactive DLP web application 
                     </pre>
                 </div>
 
-                <!-- ITEM 2 (GAMBAR 1) -->
+                <!-- ITEM 2 -->
                 <div class="p-5 bg-slate-900/90 rounded-2xl border border-cyan-500/30">
                     <h3 class="font-bold text-cyan-300 text-sm mb-2 flex items-center gap-2">
                         <span class="bg-cyan-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">2</span>
@@ -319,7 +319,7 @@ Expected Output: A fully functional single-file interactive DLP web application 
                     </p>
                 </div>
 
-                <!-- ITEM 3 (GAMBAR 1) -->
+                <!-- ITEM 3 -->
                 <div class="p-5 bg-slate-900/90 rounded-2xl border border-cyan-500/30">
                     <h3 class="font-bold text-cyan-300 text-sm mb-2 flex items-center gap-2">
                         <span class="bg-cyan-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">3</span>
@@ -330,7 +330,7 @@ Expected Output: A fully functional single-file interactive DLP web application 
                     </p>
                 </div>
 
-                <!-- ITEM 4 (GAMBAR 1) -->
+                <!-- ITEM 4 -->
                 <div class="p-5 bg-slate-900/90 rounded-2xl border border-amber-500/30">
                     <h3 class="font-bold text-amber-300 text-sm mb-2 flex items-center gap-2">
                         <span class="bg-amber-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">4</span>
@@ -341,7 +341,7 @@ Expected Output: A fully functional single-file interactive DLP web application 
                     </p>
                 </div>
 
-                <!-- ITEM 5 REFLECTION STATEMENT (GAMBAR 1) -->
+                <!-- ITEM 5 REFLECTION STATEMENT -->
                 <div class="p-5 bg-emerald-950/80 rounded-2xl border border-emerald-500/40">
                     <h3 class="font-bold text-emerald-300 text-sm mb-2 flex items-center gap-2">
                         <span class="bg-emerald-500 text-slate-950 rounded-full w-5 h-5 inline-flex items-center justify-center text-xs font-extrabold">5</span>
@@ -607,13 +607,11 @@ Expected Output: A fully functional single-file interactive DLP web application 
             grid.children[4].innerText = senVal;
         }
 
-        // Interactive Sen Simulation function (Gambar 2 / Source 4)
         function runSenSimulation() {
             const a = parseInt(document.getElementById('sim-a').value) || 0;
             const b = parseInt(document.getElementById('sim-b').value) || 0;
             const totalSen = a + b;
             
-            const rmPart = (Math.floor(totalSen / 100)).toFixed(2);
             const senBalance = totalSen % 100;
             const finalTotal = (totalSen / 100).toFixed(2);
 
